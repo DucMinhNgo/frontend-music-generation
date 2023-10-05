@@ -18,6 +18,7 @@ const PlaylistView: React.FC<props> = (props) => {
   let { className, children, ...rest } = props;
   const playlist: any = {
     id: "1",
+    title: "Playlist 1",
     tracks: [
       {
         title: "Music 1",
