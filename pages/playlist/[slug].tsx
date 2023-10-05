@@ -8,16 +8,27 @@ export async function getStaticProps({
   params,
 }: GetStaticPropsContext<{ slug: string }>) {
   const slug = params?.slug
-  const { data } = await client.query({
-    query: getPlaylistQuery,
-    variables: {
-      playlistId: slug,
-    },
-  })
+  // const { data } = await client.query({
+  //   query: getPlaylistQuery,
+  //   variables: {
+  //     playlistId: slug,
+  //   },
+  // })
 
   return {
     props: {
-      data,
+      data: {
+        playlists: [{
+          id: 1,
+          title: 1,
+          imageUrl: 1
+        }],
+        Artists: [{
+          id: 1,
+          name: 1,
+          imageUrl: "https://picsum.photos/200/300"
+        }]
+      },
     },
   }
 }
@@ -27,7 +38,22 @@ export async function getStaticPaths() {
   //   query: getAllPlaylistsQuery,
   // })
 
-  const data: any = [];
+  const data: any = {
+    playlists: [
+      {
+        id: '1',
+        title: '1',
+        imageUrl: "https://picsum.photos/200/300"
+      }
+    ],
+    Artists: [
+      //   {
+      //   id: 1,
+      //   name: 1,
+      //   imageUrl: "https://picsum.photos/200/300"
+      // }
+    ]
+  };
   const paths = data.playlists.map((playlist: any) => ({
     params: { slug: playlist.id },
   }))

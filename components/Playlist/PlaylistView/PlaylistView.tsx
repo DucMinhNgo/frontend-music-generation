@@ -12,7 +12,48 @@ export interface props {
 }
 
 const PlaylistView: React.FC<props> = (props) => {
-  const { playlist, className, children, ...rest } = props
+  console.log({ props });
+
+  // let { playlist, className, children, ...rest } = props
+  let { className, children, ...rest } = props;
+  const playlist: any = {
+    id: "1",
+    tracks: [
+      {
+        title: "Music 1",
+        url: 'http://127.0.0.1:5000/get-file/00090169-96e2-466c-8cc6-b0e1338c1b29.mp3',
+        artist: {
+          name: "Dustin pro 1",
+        },
+
+      },
+      {
+        title: "Music 2",
+        url: 'http://127.0.0.1:5000/get-file/b1673853-27c4-44fb-a014-28a11dad911b.mp3',
+        artist: {
+          name: "Dustin pro 1",
+        },
+
+      },
+      {
+        title: "Music 3",
+        url: 'http://127.0.0.1:5000/get-file/00090169-96e2-466c-8cc6-b0e1338c1b29.mp3',
+        artist: {
+          name: "Dustin pro 1",
+        },
+
+      },
+      {
+        title: "Music 4",
+        url: 'http://127.0.0.1:5000/get-file/b1673853-27c4-44fb-a014-28a11dad911b.mp3',
+        artist: {
+          name: "Dustin pro 1",
+        },
+
+      }
+    ]
+  }
+
 
   const state = usePlayerState()
 
@@ -33,7 +74,6 @@ const PlaylistView: React.FC<props> = (props) => {
     } else {
       player.setQueue(playlist, 0)
     }
-    console.log(state.playlist)
   }
 
   const handlePlay = (index?: number) => {
@@ -60,9 +100,9 @@ const PlaylistView: React.FC<props> = (props) => {
       </div>
       <Grid variant="B">
         <PlayListHeader
-          playlist_id={playlist.id}
-          img={playlist.imageUrl}
-          title={playlist.title}
+          playlist_id={playlist?.id || '1'}
+          img={playlist?.imageUrl || 'https://picsum.photos/200/300'}
+          title={playlist?.title || "1"}
           changePlaylist={() => handlePlay()}
         />
         <div className="flex flex-col gap-6">

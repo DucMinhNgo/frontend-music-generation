@@ -13,8 +13,16 @@ export async function getStaticProps() {
   return {
     props: {
       data: {
-        playlists: [],
-        Artists: []
+        playlists: [{
+          id: '1',
+          title: '1',
+          imageUrl: "https://picsum.photos/200/300"
+        }],
+        Artists: [{
+          id: '1',
+          name: '1',
+          imageUrl: "https://picsum.photos/200/300"
+        }]
       },
     }, // will be passed to the page component as props
   }

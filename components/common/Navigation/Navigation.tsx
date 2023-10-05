@@ -16,7 +16,8 @@ function Navigation() {
           <NavigationMenu.Link>
             <Link href="/">
               <a>
-                <Logo></Logo>
+                Dustin Pro
+                {/* <Logo></Logo> */}
               </a>
             </Link>
           </NavigationMenu.Link>
