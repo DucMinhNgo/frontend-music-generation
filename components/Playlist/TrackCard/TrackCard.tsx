@@ -21,6 +21,7 @@ const TrackCard: React.FC<props> = (props) => {
     fileUrl,
     artist,
     index,
+    id,
     Component = 'button',
     ...rest
   } = props
@@ -40,8 +41,8 @@ const TrackCard: React.FC<props> = (props) => {
       </div>
       <div className={cn(s.icon)}>
         {playlistId === state.playlist.id &&
-        state.currentTrackIndex === index &&
-        state.playing ? (
+          state.currentTrackIndex === index &&
+          state.playing ? (
           <PlayingIcon />
         ) : (
           <PlayIcon />

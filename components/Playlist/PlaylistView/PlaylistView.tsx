@@ -29,11 +29,13 @@ const PlaylistView: React.FC<props> = (props) => {
       setPlaylist({
         id: props.params.slug,
         title: props.params.slug,
+        lyrics: res.data.data.data.request_id.data.lyrics,
         tracks: res.data.data.data.request_id.data.results.map((item: string, idx: number) => ({
+          id: item,
           title: `Music ${idx + 1}`,
           url: `http://127.0.0.1:5000/get-file/${item}`,
           artist: {
-            name: props.params.slug,
+            name: item,
           },
         }))
       })
@@ -96,6 +98,7 @@ const PlaylistView: React.FC<props> = (props) => {
             <TrackCard
               onClick={() => handlePlay(index)}
               playlistId={playlist.id}
+              id={track.id}
               title={track.title}
               fileUrl={track.url}
               artist={track.artist.name}
@@ -105,7 +108,13 @@ const PlaylistView: React.FC<props> = (props) => {
           ))}
         </div>
       </Grid>
-    </div>
+      Lyric: <br />
+      {(playlist.lyrics || []).map((item: string) => {
+        return <div key={item}>
+          {item}<br />
+        </div>
+      })}
+    </div >
   )
 }
 

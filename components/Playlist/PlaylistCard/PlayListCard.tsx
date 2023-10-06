@@ -11,17 +11,19 @@ export interface props {
   img: string
   title: string
   className?: string
+  results: [],
+  status: string
 }
 
 const PlaylistCard: React.FC<props> = (props) => {
-  const { id, img, title, className, children, ...rest } = props
+  const { id, img, title, className, results, status, children, ...rest } = props
 
   const state = usePlayerState()
 
   return (
-    <div className={cn(s.root)}>
+    <div className={cn(s.root)} key={id}>
       <main className="w-full items-center justify-center">
-        <article className="group relative flex h-[12rem] w-[50-rem] overflow-hidden rounded-2xl bg-[#3a4448]">
+        <article className={`group relative flex h-[12rem] w-[50-rem] overflow-hidden ${status !== 'completed' ? 'rounded-t-2xl' : 'rounded-2xl'} bg-[#3a4448]`}>
           <aside className="absolute right-0 flex1 h-full flex-col justify-center space-y-8 p-3">
             <svg className="invisible h-7 w-7 text-stone-200 opacity-0 transition-all hover:scale-[120%] hover:text-white group-hover:visible group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
@@ -71,11 +73,12 @@ const PlaylistCard: React.FC<props> = (props) => {
                 <Link href={`/playlist/${encodeURIComponent(id)}`}>
                   <div className="font-medium hover:underline hover:cursor-pointer">{title}</div>
                 </Link>
-                {/* <div className="font-medium">Dustin pro</div> */}
                 <div className="text-sm">
                   {/* mapped by */}
                   <a href="#" className="text-[#96bacc] transition-all hover:text-yellow-400">Dustin Pro</a>
                 </div>
+                <div className="font-medium">{results.length}/5</div>
+
               </header>
 
               <div className="invisible flex space-x-3 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
@@ -98,7 +101,7 @@ const PlaylistCard: React.FC<props> = (props) => {
                   <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                   </svg>
-                  <div>25 Mar 2022</div>
+                  <div>5 October 2023</div>
                 </span>
               </div>
 
@@ -127,6 +130,7 @@ const PlaylistCard: React.FC<props> = (props) => {
             </section>
           </div>
         </article>
+        {status !== 'completed' && <div className="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-b-2xl animate-pulse dark:bg-blue-900 dark:text-blue-200">loading...</div>}
       </main>
       {/* <Link href={`/playlist/${encodeURIComponent(id)}`}>
         <a>

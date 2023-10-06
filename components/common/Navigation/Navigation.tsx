@@ -16,7 +16,7 @@ function Navigation() {
           <NavigationMenu.Link>
             <Link href="/">
               <a>
-                Dustin Pro
+                Music Generation
                 {/* <Logo></Logo> */}
               </a>
             </Link>
