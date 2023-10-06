@@ -4,6 +4,7 @@ import { About, ArtistCard } from '@components/common'
 import { PlaylistCard } from '@components/Playlist/PlaylistCard'
 import { useEffect, useState } from 'react'
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export async function getStaticProps() {
   // const { data } = await client.query({
@@ -15,15 +16,15 @@ export async function getStaticProps() {
     props: {
       data: {
         playlists: [
-          {
-            id: '1',
-            title: 'Playlist 1',
-            imageUrl: "https://picsum.photos/200/300"
-          }
+          // {
+          //   id: '',
+          //   title: 'Playlist 1',
+          //   imageUrl: "https://picsum.photos/200/300"
+          // }
         ],
         Artists: [
           {
-            id: '1',
+            id: '0',
             name: 'Artist 1',
             imageUrl: "https://picsum.photos/200/300"
           },
@@ -43,17 +44,19 @@ const GenerateMusic = () => {
 
   return (<>
     <div>
-      <div className="flex items-center px-3 py-2 rounded-lg bg-gray-700" color="currentColor">
+      <div className="flex items-center px-3 py-2 my-8 rounded-lg bg-gray-700" color="currentColor">
         <textarea
           onChange={(e) => {
             setText(e.target.value);
           }}
           id="chat" rows={3} className="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your message..."></textarea>
         <button onClick={async () => {
+
+          toast.error('123')
+          if (!text) return;
           const res = await axios.post('http://127.0.0.1:5000/', {
             lyrics: text.split('\n') || []
           })
-          console.log({ res });
 
           if (res.data.status === 200) {
             setText('');
@@ -77,18 +80,15 @@ const Home = (props: { data: any; error: any }) => {
   useEffect(() => {
     (async () => {
       const res = await axios.get('http://127.0.0.1:5000/get-list');
-      const currPlaylists = request;
-
       if (res.status == 200) {
         const result = res.data.result.data.map((item: any, idx: number) => {
+
           return {
             id: item.key,
-            title: `Request ${idx + 2}`,
+            title: `${item.key}`,
             imageUrl: "https://picsum.photos/200/300"
           }
         })
-
-        console.log({ result });
         setRequest([...request, ...result])
 
       }
@@ -105,8 +105,8 @@ const Home = (props: { data: any; error: any }) => {
       <GenerateMusic />
       <Grid>
         <div className="col-span-2">
-          <h1 className="text-2xl font-medium">Playlists</h1>
-          <div className="flex flex-col gap-16">
+          <h1 className="text-2xl font-medium">Request List</h1>
+          <div className="flex flex-col">
             {request.map((playlist: any) => (
               <PlaylistCard
                 key={playlist.id}
@@ -118,7 +118,7 @@ const Home = (props: { data: any; error: any }) => {
           </div>
         </div>
         <div className="flex flex-col gap-8">
-          <h1 className="text-xl font-medium">Top Artists</h1>
+          <h1 className="text-xl font-medium">Top Music</h1>
           <div className="flex flex-col gap-4">
             {data.Artists.map((artist: any) => (
               <ArtistCard
@@ -129,7 +129,7 @@ const Home = (props: { data: any; error: any }) => {
               />
             ))}
           </div>
-          <About />
+          {/* <About /> */}
         </div>
       </Grid>
     </div>
