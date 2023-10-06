@@ -5,6 +5,7 @@ import { PlaylistCard } from '@components/Playlist/PlaylistCard'
 import { useEffect, useState } from 'react'
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Link from 'next/link'
 
 export async function getStaticProps() {
   // const { data } = await client.query({
@@ -23,16 +24,16 @@ export async function getStaticProps() {
           // }
         ],
         Artists: [
-          {
-            id: '0',
-            name: 'Artist 1',
-            imageUrl: "https://picsum.photos/200/300"
-          },
-          {
-            id: '2',
-            name: 'Artist 2',
-            imageUrl: "https://picsum.photos/200/300"
-          }
+          // {
+          //   id: '0',
+          //   name: 'Artist 1',
+          //   imageUrl: "https://picsum.photos/200/300"
+          // },
+          // {
+          //   id: '2',
+          //   name: 'Artist 2',
+          //   imageUrl: "https://picsum.photos/200/300"
+          // }
         ]
       },
     }, // will be passed to the page component as props
@@ -76,6 +77,7 @@ const GenerateMusic = ({ getRequestList }) => {
 const Home = (props: { data: any; error: any }) => {
   const { data, ...rest } = props;
   const [request, setRequest] = useState(data.playlists);
+  const [bestMusic, setBestMusic] = useState([]);
 
   const getRequestList = async () => {
     const res = await axios.get('http://127.0.0.1:5000/get-list');
@@ -85,7 +87,7 @@ const Home = (props: { data: any; error: any }) => {
         return {
           id: item.key,
           title: `${item.key}`,
-          imageUrl: "https://picsum.photos/200/300",
+          imageUrl: `https://picsum.photos/200/300?random=${Math.random() * 1000}`,
           ...item.data.request_id.data,
         }
       })
@@ -103,6 +105,20 @@ const Home = (props: { data: any; error: any }) => {
 
       return () => clearInterval(intervalId);
     })()
+  }, [])
+
+  useEffect(() => {
+    (async () => {
+      const res = await axios.get('http://127.0.0.1:5000/get-best-music');
+      setBestMusic(res.data.results.map((item: any, idx: number) => {
+        return {
+          id: item,
+          name: `Music ${idx + 1}`,
+          imageUrl: `https://picsum.photos/200/300?random=${idx + 1}`
+        };
+      }));
+
+    })();
   }, [])
 
   const removeDuplicates = (arr: any[]) => {
@@ -145,7 +161,7 @@ const Home = (props: { data: any; error: any }) => {
       <Grid>
         <div className="col-span-2">
           <h1 className="text-2xl font-medium">Request List</h1>
-          <div className="flex flex-col">
+          <div className="flex flex-col max-h-[500px] overflow-y-auto">
             {removeDuplicates(request).sort((a: any, b: any) => a.status < b.status ? 1 : -1).map((playlist: any) => (
               <PlaylistCard
                 key={playlist.id}
@@ -160,8 +176,8 @@ const Home = (props: { data: any; error: any }) => {
         </div>
         <div className="flex flex-col gap-8">
           <h1 className="text-xl font-medium">Top Music</h1>
-          <div className="flex flex-col gap-4">
-            {data.Artists.map((artist: any) => (
+          <div className="flex flex-col gap-4 max-h-[450px] overflow-y-auto">
+            {(bestMusic).map((artist: any) => (
               <ArtistCard
                 key={artist.id}
                 name={artist.name}

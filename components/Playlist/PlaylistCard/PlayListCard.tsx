@@ -17,6 +17,7 @@ export interface props {
 
 const PlaylistCard: React.FC<props> = (props) => {
   const { id, img, title, className, results, status, children, ...rest } = props
+  const image = `https://picsum.photos/640/425?random=${Math.random() * 1000}`;
 
   const state = usePlayerState()
 
@@ -35,7 +36,7 @@ const PlaylistCard: React.FC<props> = (props) => {
           </aside>
 
           <div className="absolute inset-y-0 left-0 w-48">
-            <img src="https://unsplash.it/id/1/640/425" alt="" className="h-full w-full object-cover object-center opacity-95" />
+            <img src={image} alt="" className="h-full w-full object-cover object-center opacity-95" />
 
             <div className="invisible absolute inset-0 flex h-full w-full items-center justify-center bg-[#0c0c0c]/70 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
 
@@ -61,7 +62,7 @@ const PlaylistCard: React.FC<props> = (props) => {
           <div className="absolute inset-y-0 left-44 w-[39rem] overflow-hidden rounded-2xl transition-all group-hover:w-[36rem]">
             <div
               style={{
-                backgroundImage: "url('https://unsplash.it/id/1/640/425')"
+                backgroundImage: `url('${image}')`
               }}
               // styles="background-image: url('https://unsplash.it/id/1/640/425')" 
               className="h-full w-full bg-cover bg-center">

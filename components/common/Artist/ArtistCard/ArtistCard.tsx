@@ -1,6 +1,7 @@
 import s from "./ArtistCard.module.css"
 import cn from 'clsx'
 import Image from "next/image"
+import Link from "next/link"
 
 
 export interface props {
@@ -24,6 +25,7 @@ const ArtistCard: React.FC<props> = (props) => {
 
   return (
     <div className={cn(s.root)}>
+      {/* < */}
       <Image
         className="rounded-md"
         height='64'
@@ -31,10 +33,12 @@ const ArtistCard: React.FC<props> = (props) => {
         src={imgUrl}
         alt="image"
       />
-      <div className='flex flex-row gap-4'>
-        <h1 className={cn(s.title)} >{name}</h1>
-        {children}
-      </div>
+      <Link href={`/playlist/${encodeURIComponent('best-music')}`}>
+        <div className='flex flex-row gap-4 hover:underline hover:cursor-pointer'>
+          <h1 className={cn(s.title)} >{name}</h1>
+          {children}
+        </div>
+      </Link>
     </div>
   )
 }

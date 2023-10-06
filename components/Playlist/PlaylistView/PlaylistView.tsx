@@ -23,14 +23,25 @@ const PlaylistView: React.FC<props> = (props) => {
 
   useEffect(() => {
     (async () => {
-      const res = await axios.get(`http://127.0.0.1:5000/get-detail/${props.params.slug}`);
-      console.log(res.data.data.data.request_id.data.results);
+      let lyrics = [];
+      let tracks = [];
+      if (props.params.slug === 'best-music') {
+        const res = await axios.get(`http://127.0.0.1:5000/get-best-music`);
+        tracks = (res.data.results.map((item: any, idx: number) => {
+          return {
+            id: item,
+            title: `Music ${idx + 1}`,
+            url: `http://127.0.0.1:5000/get-best-file/${item}`,
+            artist: {
+              name: item,
+            },
+          }
+        }));
 
-      setPlaylist({
-        id: props.params.slug,
-        title: props.params.slug,
-        lyrics: res.data.data.data.request_id.data.lyrics,
-        tracks: res.data.data.data.request_id.data.results.map((item: string, idx: number) => ({
+      } else {
+        const res = await axios.get(`http://127.0.0.1:5000/get-detail/${props.params.slug}`);
+        lyrics = res.data.data.data.request_id.data.lyrics;
+        tracks = res.data.data.data.request_id.data.results.map((item: string, idx: number) => ({
           id: item,
           title: `Music ${idx + 1}`,
           url: `http://127.0.0.1:5000/get-file/${item}`,
@@ -38,6 +49,13 @@ const PlaylistView: React.FC<props> = (props) => {
             name: item,
           },
         }))
+      }
+
+      setPlaylist({
+        id: props.params.slug,
+        title: props.params.slug,
+        lyrics,
+        tracks,
       })
     })();
   }, [])
@@ -77,7 +95,7 @@ const PlaylistView: React.FC<props> = (props) => {
   }
 
   return (
-    <div>
+    <div className='h-[10px]'>
       <div className="flex flex-col mb-8 items-start">
         <Link href="/">
           <Button variant="ghost">
@@ -89,11 +107,11 @@ const PlaylistView: React.FC<props> = (props) => {
       <Grid variant="B">
         <PlayListHeader
           playlist_id={playlist?.id}
-          img={playlist?.imageUrl || 'https://picsum.photos/200/300'}
+          img={playlist?.imageUrl || `https://picsum.photos/200/300?random=${Math.random() * 1000}`}
           title={playlist?.title}
           changePlaylist={() => handlePlay()}
         />
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 max-h-[450px] overflow-y-auto">
           {(playlist.tracks || []).map((track: Track, index: number) => (
             <TrackCard
               onClick={() => handlePlay(index)}
@@ -108,7 +126,8 @@ const PlaylistView: React.FC<props> = (props) => {
           ))}
         </div>
       </Grid>
-      Lyric: <br />
+      {(playlist.lyrics || []).length > 0 &&
+        <>Lyric: <br /></>}
       {(playlist.lyrics || []).map((item: string) => {
         return <div key={item}>
           {item}<br />

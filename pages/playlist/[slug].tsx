@@ -53,6 +53,9 @@ export async function getStaticPaths() {
 
   const data: any = {
     playlists: [
+      {
+        id: 'best-music'
+      },
       ...result
     ],
     Artists: [
@@ -92,9 +95,9 @@ const Playlist = (props: { playlist: Playlist; data: any, params: any }) => {
   }, [])
 
   return (
-    <>
+    <div className=''>
       <PlaylistView playlist={request} params={props?.params}></PlaylistView>
-    </>
+    </div>
   )
 }
 
