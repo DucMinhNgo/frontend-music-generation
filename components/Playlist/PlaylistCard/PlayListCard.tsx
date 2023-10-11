@@ -12,11 +12,12 @@ export interface props {
   title: string
   className?: string
   results: [],
-  status: string
+  status: string,
+  lyrics: string[],
 }
 
 const PlaylistCard: React.FC<props> = (props) => {
-  const { id, img, title, className, results, status, children, ...rest } = props
+  const { id, img, title, className, results, lyrics, status, children, ...rest } = props
   const image = `https://picsum.photos/640/425?random=${Math.random() * 1000}`;
 
   const state = usePlayerState()
@@ -74,10 +75,12 @@ const PlaylistCard: React.FC<props> = (props) => {
                 <Link href={`/playlist/${encodeURIComponent(id)}`}>
                   <div className="font-medium hover:underline hover:cursor-pointer">{title}</div>
                 </Link>
-                <div className="text-sm">
-                  {/* mapped by */}
-                  <a href="#" className="text-[#96bacc] transition-all hover:text-yellow-400">Dustin Pro</a>
-                </div>
+                <Link href={`/playlist/${encodeURIComponent(id)}`}>
+                  <div className="text-sm mr-[100px]">
+                    {/* mapped by */}
+                    <a href="#" className="text-[#96bacc] transition-all hover:text-yellow-400">{lyrics[0].substring(0, 30)}...</a>
+                  </div>
+                </Link>
                 <div className="font-medium">{results.length}/5</div>
 
               </header>

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Link from 'next/link'
+import MelodyCard from '../components/common/Artist/ArtistCard/MelodyCard'
 
 export async function getStaticProps() {
   // const { data } = await client.query({
@@ -78,6 +79,7 @@ const Home = (props: { data: any; error: any }) => {
   const { data, ...rest } = props;
   const [request, setRequest] = useState(data.playlists);
   const [bestMusic, setBestMusic] = useState([]);
+  const [melody, setMelody] = useState([]);
 
   const getRequestList = async () => {
     const res = await axios.get('http://127.0.0.1:5000/get-list');
@@ -101,7 +103,7 @@ const Home = (props: { data: any; error: any }) => {
   useEffect(() => {
     (async () => {
       await getRequestList();
-      const intervalId = setInterval(getRequestList, 10000);
+      const intervalId = setInterval(getRequestList, 20000);
 
       return () => clearInterval(intervalId);
     })()
@@ -114,7 +116,16 @@ const Home = (props: { data: any; error: any }) => {
         return {
           id: item,
           name: `Music ${idx + 1}`,
-          imageUrl: `https://picsum.photos/200/300?random=${idx + 1}`
+          imageUrl: `https://picsum.photos/200/300?random=${Math.random() * 1000}`
+        };
+      }));
+
+      const res1 = await axios.get('http://127.0.0.1:5000/get-melody-music');
+      setMelody(res1.data.results.map((item: any, idx: number) => {
+        return {
+          id: item,
+          name: `Melody ${idx + 1}`,
+          imageUrl: `https://picsum.photos/200/300?random=${Math.random() * 1000}`
         };
       }));
 
@@ -162,7 +173,7 @@ const Home = (props: { data: any; error: any }) => {
         <div className="col-span-2">
           <h1 className="text-2xl font-medium">Request List</h1>
           <div className="flex flex-col max-h-[500px] overflow-y-auto">
-            {removeDuplicates(request).sort((a: any, b: any) => a.status < b.status ? 1 : -1).map((playlist: any) => (
+            {removeDuplicates(request).sort((a: any, b: any) => a.created_at < b.created_at ? 1 : -1).map((playlist: any) => (
               <PlaylistCard
                 key={playlist.id}
                 id={playlist.id}
@@ -170,13 +181,14 @@ const Home = (props: { data: any; error: any }) => {
                 img={playlist.imageUrl}
                 results={playlist.results}
                 status={playlist.status}
+                lyrics={playlist.lyrics}
               />
             ))}
           </div>
         </div>
         <div className="flex flex-col gap-8">
           <h1 className="text-xl font-medium">Top Music</h1>
-          <div className="flex flex-col gap-4 max-h-[450px] overflow-y-auto">
+          <div className="flex flex-col gap-4 max-h-[200px] overflow-y-auto">
             {(bestMusic).map((artist: any) => (
               <ArtistCard
                 key={artist.id}
@@ -187,6 +199,17 @@ const Home = (props: { data: any; error: any }) => {
             ))}
           </div>
           {/* <About /> */}
+          <h1 className="text-xl font-medium">Top Melody</h1>
+          <div className="flex flex-col gap-4 max-h-[180px] overflow-y-auto">
+            {(melody).map((artist: any) => (
+              <MelodyCard
+                key={artist.id}
+                name={artist.name}
+                id={artist.id}
+                imgUrl={artist.imageUrl}
+              />
+            ))}
+          </div>
         </div>
       </Grid>
     </div>

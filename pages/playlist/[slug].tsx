@@ -5,6 +5,7 @@ import { GetStaticPropsContext } from 'next'
 import { client } from '@lib/apollo'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import PlaylistMelodyView from '../../components/Playlist/PlaylistView/PlaylistMelodyView'
 
 export async function getStaticProps({
   params,
@@ -56,6 +57,9 @@ export async function getStaticPaths() {
       {
         id: 'best-music'
       },
+      {
+        id: 'melody-music'
+      },
       ...result
     ],
     Artists: [
@@ -97,6 +101,7 @@ const Playlist = (props: { playlist: Playlist; data: any, params: any }) => {
   return (
     <div className=''>
       <PlaylistView playlist={request} params={props?.params}></PlaylistView>
+      {/* <PlaylistMelodyView playlist={request} params={props?.params}></PlaylistMelodyView> */}
     </div>
   )
 }
