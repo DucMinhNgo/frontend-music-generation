@@ -48,7 +48,8 @@ const GenerateMelody = () => {
               lyrics: text.split('\n') || []
             })
 
-            if (res.data.status === 200) {
+
+            if (res.status === 200) {
               setText('');
             }
 
