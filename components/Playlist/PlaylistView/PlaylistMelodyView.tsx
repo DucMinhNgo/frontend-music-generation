@@ -27,12 +27,12 @@ const PlaylistMelodyView: React.FC<props> = (props) => {
       let tracks = [];
       let melody = [];
       if (props.params.slug === 'best-music') {
-        const res = await axios.get(`http://127.0.0.1:5000/get-best-music`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/get-best-music`);
         tracks = (res.data.results.map((item: any, idx: number) => {
           return {
             id: item,
             title: `Music ${idx + 1}`,
-            url: `http://127.0.0.1:5000/get-best-file/${item}`,
+            url: `${process.env.NEXT_PUBLIC_API}/get-best-file/${item}`,
             artist: {
               name: item,
             },
@@ -40,34 +40,34 @@ const PlaylistMelodyView: React.FC<props> = (props) => {
         }));
 
       } else if (props.params.slug === 'melody-music') {
-        const res = await axios.get(`http://127.0.0.1:5000/get-melody-music`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/get-melody-music`);
         tracks = (res.data.results.map((item: any, idx: number) => {
           return {
             id: item,
             title: `Melody ${idx + 1}`,
-            url: `http://127.0.0.1:5000/get-best-file/${item}`,
+            url: `${process.env.NEXT_PUBLIC_API}/get-best-file/${item}`,
             artist: {
               name: item,
             },
           }
         }));
       } else {
-        const res = await axios.get(`http://127.0.0.1:5000/get-detail/${props.params.slug}`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/get-detail/${props.params.slug}`);
         lyrics = res.data.data.data.request_id.data.lyrics;
         tracks = res.data.data.data.request_id.data.results.map((item: string, idx: number) => ({
           id: item,
           title: `Music ${idx + 1}`,
-          url: `http://127.0.0.1:5000/get-file/${item}`,
+          url: `${process.env.NEXT_PUBLIC_API}/get-file/${item}`,
           artist: {
             name: item,
           },
         }))
-        const resMelody = await axios.get(`http://127.0.0.1:5000/get-melody-music`);
+        const resMelody = await axios.get(`${process.env.NEXT_PUBLIC_API}/get-melody-music`);
         melody = (resMelody.data.results.map((item: any, idx: number) => {
           return {
             id: item,
             title: `Music ${idx + 1}`,
-            url: `http://127.0.0.1:5000/get-melody-file/${item}`,
+            url: `${process.env.NEXT_PUBLIC_API}/get-melody-file/${item}`,
             artist: {
               name: item,
             },

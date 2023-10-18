@@ -55,7 +55,7 @@ const GenerateMusic = ({ getRequestList }) => {
           id="chat" rows={3} className="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your message..."></textarea>
         <button onClick={async () => {
           if (!text) return;
-          const res = await axios.post('http://127.0.0.1:5000/', {
+          const res = await axios.post(`${process.env.NEXT_PUBLIC_API}/`, {
             lyrics: text.split('\n') || []
           })
 
@@ -82,7 +82,7 @@ const Home = (props: { data: any; error: any }) => {
   const [melody, setMelody] = useState([]);
 
   const getRequestList = async () => {
-    const res = await axios.get('http://127.0.0.1:5000/get-list');
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/get-list`);
     let result = [];
     if (res.status == 200) {
       result = res.data.result.data.map((item: any, idx: number) => {
@@ -111,7 +111,7 @@ const Home = (props: { data: any; error: any }) => {
 
   useEffect(() => {
     (async () => {
-      const res = await axios.get('http://127.0.0.1:5000/get-best-music');
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/get-best-music`);
       setBestMusic(res.data.results.map((item: any, idx: number) => {
         return {
           id: item,
@@ -120,7 +120,7 @@ const Home = (props: { data: any; error: any }) => {
         };
       }));
 
-      const res1 = await axios.get('http://127.0.0.1:5000/get-melody-music');
+      const res1 = await axios.get(`${process.env.NEXT_PUBLIC_API}/get-melody-music`);
       setMelody(res1.data.results.map((item: any, idx: number) => {
         return {
           id: item,

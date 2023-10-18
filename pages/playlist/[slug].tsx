@@ -43,7 +43,7 @@ export async function getStaticPaths() {
   // const { data } = await client.query({
   //   query: getAllPlaylistsQuery,
   // })
-  const res = await axios.get('http://127.0.0.1:5000/get-list');
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/get-list`);
   const result = res.data.result.data.map((item: any, idx: number) => {
     return {
       id: item.key,
@@ -83,7 +83,7 @@ const Playlist = (props: { playlist: Playlist; data: any, params: any }) => {
 
   useEffect(() => {
     (async () => {
-      const res = await axios.get('http://127.0.0.1:5000/get-list');
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/get-list`);
       if (res.status == 200) {
         const result = res.data.result.data.map((item: any, idx: number) => {
 

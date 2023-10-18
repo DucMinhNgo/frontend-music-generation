@@ -44,7 +44,7 @@ const GenerateMelody = () => {
         <button
           onClick={async () => {
             if (!text) return;
-            const res = await axios.post('http://127.0.0.1:5000/melody', {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API}/melody`, {
               lyrics: text.split('\n') || []
             })
 
@@ -76,7 +76,7 @@ const MixMusic = () => {
   });
 
   const getRequestList = async () => {
-    const res = await axios.get('http://127.0.0.1:5000/get-list');
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/get-list`);
     let result = [];
     if (res.status == 200) {
       result = res.data.result.data.map((item: any, idx: number) => {
@@ -95,7 +95,7 @@ const MixMusic = () => {
   }
 
   const getMelody = async () => {
-    const res = await axios.get(`http://127.0.0.1:5000/get-melody-music`);
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/get-melody-music`);
     setMelody((res.data.results || []).map((item: string) => {
       return {
         value: item,
@@ -189,7 +189,7 @@ const MixMusic = () => {
             music_id: state.music.value,
             melody: state.melody.map((item: any) => item.value)
           }
-          const res = await axios.post('http://127.0.0.1:5000/mix', data);
+          const res = await axios.post(`${process.env.NEXT_PUBLIC_API}/mix`, data);
 
           if (res.data.status === 200) {
             setState({
@@ -219,24 +219,24 @@ const PlaylistView: React.FC<props> = (props) => {
       let tracks = [];
       let melody = [];
       if (props.params.slug === 'best-music') {
-        const res = await axios.get(`http://127.0.0.1:5000/get-best-music`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/get-best-music`);
         tracks = (res.data.results.map((item: any, idx: number) => {
           return {
             id: item,
             title: `Music ${idx + 1}`,
-            url: `http://127.0.0.1:5000/get-best-file/${item}`,
+            url: `${process.env.NEXT_PUBLIC_API}/get-best-file/${item}`,
             artist: {
               name: item,
             },
           }
         }));
       } else if (props.params.slug === 'melody-music') {
-        const res = await axios.get(`http://127.0.0.1:5000/get-melody-music`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/get-melody-music`);
         tracks = (res.data.results.map((item: any, idx: number) => {
           return {
             id: item,
             title: `Melody ${idx + 1}`,
-            url: `http://127.0.0.1:5000/get-melody-file/${item}`,
+            url: `${process.env.NEXT_PUBLIC_API}/get-melody-file/${item}`,
             artist: {
               name: item,
             },
@@ -244,22 +244,22 @@ const PlaylistView: React.FC<props> = (props) => {
         }));
       }
       else {
-        const res = await axios.get(`http://127.0.0.1:5000/get-detail/${props.params.slug}`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/get-detail/${props.params.slug}`);
         lyrics = res.data.data.data.request_id.data.lyrics;
         tracks = res.data.data.data.request_id.data.results.map((item: string, idx: number) => ({
           id: item,
           title: `Music ${idx + 1}`,
-          url: `http://127.0.0.1:5000/get-file/${item}`,
+          url: `${process.env.NEXT_PUBLIC_API}/get-file/${item}`,
           artist: {
             name: item,
           },
         }))
-        const resMelody = await axios.get(`http://127.0.0.1:5000/get-melody-music`);
+        const resMelody = await axios.get(`${process.env.NEXT_PUBLIC_API}/get-melody-music`);
         melody = (resMelody.data.results.map((item: any, idx: number) => {
           return {
             id: item,
             title: `Music ${idx + 1}`,
-            url: `http://127.0.0.1:5000/get-melody-file/${item}`,
+            url: `${process.env.NEXT_PUBLIC_API}/get-melody-file/${item}`,
             artist: {
               name: item,
             },
